@@ -86,9 +86,10 @@ alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
 alt-3 = 'workspace 3'
 
-alt-shift-1 = 'move-node-to-workspace 1'
-alt-shift-2 = 'move-node-to-workspace 2'
-alt-shift-3 = 'move-node-to-workspace 3'
+# Move window to workspace AND switch focus to that workspace
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
 
 # App-Specific Workspaces (Letters)
 # Dedicated workspaces for specific applications via auto-assignment
@@ -96,17 +97,20 @@ alt-shift-3 = 'move-node-to-workspace 3'
 alt-b = 'workspace B' # Browser (Chrome)
 alt-s = 'workspace S' # Safari
 alt-c = 'workspace C' # Code (VS Code)
-alt-t = 'workspace T' # Terminal (WezTerm)
-alt-w = 'workspace W' # WhatsApp
+alt-w = 'workspace W' # Terminal (WezTerm)
+alt-m = 'workspace M' # WhatsApp / Media
+alt-d = 'workspace D' # Databases
 
-alt-shift-b = 'move-node-to-workspace B'
-alt-shift-s = 'move-node-to-workspace S'
-alt-shift-c = 'move-node-to-workspace C'
-alt-shift-t = 'move-node-to-workspace T'
-alt-shift-w = 'move-node-to-workspace W'
-
+# Move window to workspace AND switch focus to that workspace
+alt-shift-b = ['move-node-to-workspace B', 'workspace B']
+alt-shift-s = ['move-node-to-workspace S', 'workspace S']
+alt-shift-c = ['move-node-to-workspace C', 'workspace C']
+alt-shift-w = ['move-node-to-workspace W', 'workspace W']
+alt-shift-m = ['move-node-to-workspace M', 'workspace M']
+alt-shift-d = ['move-node-to-workspace D', 'workspace D']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus-back-and-forth
+# Switch focus between the current window and the last focused window (Global)
 alt-tab = 'focus-back-and-forth'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
@@ -115,6 +119,10 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
 alt-shift-r = 'mode resize' # CUSTOM: Resize Shortcut
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#close
+# Override default 'cmd-q' to quit app to prevent focus race conditions
+cmd-q = ['close --quit-if-last-window']
 
 [mode.resize.binding]
 h = 'resize width -50'
@@ -152,21 +160,30 @@ run = 'move-node-to-workspace B'
 if.app-id = 'com.apple.Safari'
 run = 'move-node-to-workspace S'
 
-# Terminal (WezTerm) -> Workspace T
+# 1. WezTerm -> W
 [[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
-run = 'move-node-to-workspace T'
+run = 'move-node-to-workspace W'
+
+# 2. Apple Terminal -> W (Floating)
+[[on-window-detected]]
+if.app-id = 'com.apple.Terminal'
+run = ['move-node-to-workspace W', 'layout floating']
 
 # VS Code -> Workspace C (Isolated & Auto Accordion)
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
-# Note: Square brackets [] are used to run multiple commands at once
 run = ['move-node-to-workspace C', 'layout accordion horizontal vertical']
 
-# WhatsApp -> Workspace W
+# DBeaver -> Workspace D (Auto Accordion)
+[[on-window-detected]]
+if.app-id = 'org.jkiss.dbeaver.core.product'
+run = ['move-node-to-workspace D', 'layout accordion horizontal vertical']
+
+# WhatsApp -> Workspace M (Floating)
 [[on-window-detected]]
 if.app-id = 'net.whatsapp.WhatsApp'
-run = ['move-node-to-workspace W']
+run = ['move-node-to-workspace M', 'layout floating']
 
 # System Apps (Floating, Stay on Current Workspace)
 [[on-window-detected]]
