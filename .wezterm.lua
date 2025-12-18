@@ -65,8 +65,8 @@ config.font_size = 15
 -- Window visuals
 -- =====================
 config.adjust_window_size_when_changing_font_size = false
-config.window_background_opacity = 0.9
-config.macos_window_background_blur = 40
+config.window_background_opacity = 0.85
+config.macos_window_background_blur = 30
 config.window_close_confirmation = "NeverPrompt"
 
 -- =====================
